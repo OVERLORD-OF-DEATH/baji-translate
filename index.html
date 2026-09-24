@@ -10,7 +10,9 @@ h1{color:#3b82f6;letter-spacing:6px;text-shadow:0 0 20px blue}
 .card{background:#0a0a2a;border:2px solid #1e3a8a;border-radius:15px;padding:15px;margin-top:15px}
 select,textarea,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #1e3a8a}
 textarea{background:black;color:white;height:120px}
-button{background:#1e3a8a;color:white;font-weight:bold;font-size:18px}
+button{background:#1e3a8a;color:white;font-weight:bold;font-size:16px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.btns button{background:#111;padding:10px;font-size:14px;border:1px solid #3b82f6}
 #splash{position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99}
 </style>
 </head>
@@ -56,10 +58,18 @@ button{background:#1e3a8a;color:white;font-weight:bold;font-size:18px}
 <textarea id="input" placeholder="Ecris ton texte ici..."></textarea>
 <button onclick="traduire()">TRADUIRE</button>
 <textarea id="output" placeholder="Traduction ici..."></textarea>
+
+<div class="btns">
+<button onclick="supprimer()">🗑️ SUPPRIMER</button>
+<button onclick="copier()">📋 COPIER</button>
+<button onclick="coller()">📥 COLLER</button>
+<button onclick="ecouter()">🔊 ECOUTER</button>
+</div>
 </div>
 
 <script>
 setTimeout(function(){document.getElementById('splash').style.display='none'},3000);
+
 async function traduire(){
 let f=document.getElementById('from').value;
 let t=document.getElementById('to').value;
@@ -71,6 +81,32 @@ let reponse=await fetch(url);
 let data=await reponse.json();
 let traduit=data[0].map(x=>x[0]).join('');
 document.getElementById('output').value=traduit;
+}
+
+function supprimer(){
+document.getElementById('input').value="";
+document.getElementById('output').value="";
+}
+
+async function copier(){
+let txt=document.getElementById('output').value;
+if(txt==""){alert("Rien à copier");return}
+await navigator.clipboard.writeText(txt);
+alert("Copié!");
+}
+
+async function coller(){
+let txt=await navigator.clipboard.readText();
+document.getElementById('input').value=txt;
+}
+
+function ecouter(){
+let txt=document.getElementById('output').value;
+if(txt==""){alert("Rien à écouter");return}
+let to=document.getElementById('to').value;
+let utter=new SpeechSynthesisUtterance(txt);
+utter.lang=to;
+speechSynthesis.speak(utter);
 }
 </script>
 </body>
