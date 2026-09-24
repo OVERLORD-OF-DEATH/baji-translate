@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LPWT BAJI</title>
+<style>
+body{background:black;color:white;text-align:center;font-family:Arial;padding:15px}
+h1{color:#3b82f6;letter-spacing:6px;text-shadow:0 0 20px blue}
+.card{background:#0a0a2a;border:2px solid #1e3a8a;border-radius:15px;padding:15px;margin-top:15px}
+select,textarea,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #1e3a8a}
+textarea{background:black;color:white;height:120px}
+button{background:#1e3a8a;color:white;font-weight:bold;font-size:18px}
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99}
+</style>
+</head>
+<body>
+<div id="splash">
+<div style="font-size:70px">🧒📖</div>
+<h1>LPWT BAJI</h1>
+<p>Chargement...</p>
+</div>
+
+<h1>LPWT BAJI</h1>
+<p>11 Langues - Noir & Bleu Nuit - Gratuit</p>
+
+<div class="card">
+<select id="from">
+<option value="fr">Francais</option>
+<option value="en">Anglais</option>
+<option value="de">Allemand</option>
+<option value="ln">Lingala</option>
+<option value="sw">Swahili</option>
+<option value="kg">Kikongo</option>
+<option value="lua">Tshiluba</option>
+<option value="pt">Portugais</option>
+<option value="es">Espagnol</option>
+<option value="ar">Arabe</option>
+<option value="zh">Chinois</option>
+</select>
+
+<select id="to">
+<option value="en">Anglais</option>
+<option value="fr">Francais</option>
+<option value="de">Allemand</option>
+<option value="ln">Lingala</option>
+<option value="sw">Swahili</option>
+<option value="kg">Kikongo</option>
+<option value="lua">Tshiluba</option>
+<option value="pt">Portugais</option>
+<option value="es">Espagnol</option>
+<option value="ar">Arabe</option>
+<option value="zh">Chinois</option>
+</select>
+
+<textarea id="input" placeholder="Ecris ton texte ici..."></textarea>
+<button onclick="traduire()">TRADUIRE</button>
+<textarea id="output" placeholder="Traduction ici..."></textarea>
+</div>
+
+<script>
+setTimeout(function(){document.getElementById('splash').style.display='none'},3000);
+async function traduire(){
+let f=document.getElementById('from').value;
+let t=document.getElementById('to').value;
+let txt=document.getElementById('input').value;
+if(txt==""){alert("Ecris un texte");return}
+document.getElementById('output').value="Traduction...";
+let url="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+f+"&tl="+t+"&dt=t&q="+encodeURIComponent(txt);
+let reponse=await fetch(url);
+let data=await reponse.json();
+let traduit=data[0].map(x=>x[0]).join('');
+document.getElementById('output').value=traduit;
+}
+</script>
+</body>
+</html>
